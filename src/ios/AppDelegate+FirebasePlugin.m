@@ -2,7 +2,7 @@
 #import "FirebasePlugin.h"
 #import "Firebase.h"
 #import <objc/runtime.h>
-
+#import "FreshchatSDK/FreshchatSDK.h"
 
 @import UserNotifications;
 
@@ -129,6 +129,7 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    [[Freshchat sharedInstance] setPushRegistrationToken:deviceToken];
     [FIRMessaging messaging].APNSToken = deviceToken;
     NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@", deviceToken);
 }
@@ -147,6 +148,10 @@
             [mutableUserInfo setValue:@"data" forKey:@"messageType"];
         }
 
+        if ([[Freshchat sharedInstance]isFreshchatNotification:userInfo]) {
+           [[Freshchat sharedInstance]handleRemoteNotification:userInfo andAppstate:application.applicationState];
+        }
+        
         NSLog(@"didReceiveRemoteNotification: %@", mutableUserInfo);
         
         completionHandler(UIBackgroundFetchResultNewData);

@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import "FreshchatSDK/FreshchatSDK.h"
 @import UserNotifications;
 
 @interface AppDelegate (FirebasePlugin)

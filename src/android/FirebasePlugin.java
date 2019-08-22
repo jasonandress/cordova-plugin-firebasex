@@ -59,6 +59,8 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import com.freshchat.consumer.sdk.*;
+
 public class FirebasePlugin extends CordovaPlugin {
 
     protected static FirebasePlugin instance = null;
@@ -296,6 +298,7 @@ public class FirebasePlugin extends CordovaPlugin {
                     String currentToken = FirebaseInstanceId.getInstance().getToken();
                     if (currentToken != null) {
                         FirebasePlugin.sendToken(currentToken);
+                        Freshchat.getInstance(getApplicationContext()).setPushRegistrationToken(currentToken);
                     }
                 } catch (Exception e) {
                     handleExceptionWithContext(e, callbackContext);

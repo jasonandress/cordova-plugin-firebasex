@@ -24,6 +24,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 import java.util.Random;
 
+import com.freshchat.consumer.sdk.*;
+
 public class FirebasePluginMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "FirebasePlugin";
@@ -133,6 +135,11 @@ public class FirebasePluginMessagingService extends FirebaseMessagingService {
                 if(data.containsKey("notification_android_icon")) icon = data.get("notification_android_icon");
                 if(data.containsKey("notification_android_visibility")) visibility = data.get("notification_android_visibility");
                 if(data.containsKey("notification_android_priority")) priority = data.get("notification_android_priority");
+            }
+
+            if (Freshchat.isFreshchatNotification(data)) {
+                Freshchat.getInstance(getApplicationContext()).handleFcmMessage(getApplicationContext(), data);
+                return;
             }
 
             if (TextUtils.isEmpty(id)) {
